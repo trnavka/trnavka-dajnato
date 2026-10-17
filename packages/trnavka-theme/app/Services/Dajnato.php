@@ -56,7 +56,7 @@ class Dajnato
 
     public function campaign(?View $view = null): Campaign
     {
-        $campaignId = ($view?->getData()['attributes'] ?? [])['campaign_id'] ?? $this->request->get('campaign_id');
+        $campaignId = ($view?->getData()['attributes'] ?? [])['campaign_id'] ?? $this->request->query->get('campaign_id');
         $post = empty($campaignId) ? $this->wp->currentPost() : get_post($campaignId);
 
         if ($post?->post_type !== 'campaign') {
@@ -101,7 +101,7 @@ class Dajnato
             'onetimeOrRecurring' => $recurring ? 'recurring' : 'onetime',
         ];
 
-        $campaignValue = $this->request->get('campaign_value');
+        $campaignValue = $this->request->query->get('campaign_value');
         $onetimeCampaignValue = in_array($campaignValue, $campaign->options) ? $campaignValue : null;
         $recurringCampaignValue = in_array($campaignValue, $campaign->recurringOptions) ? $campaignValue : null;
 

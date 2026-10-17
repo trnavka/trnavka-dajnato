@@ -181,7 +181,7 @@ class Darujme
 
     public function subscriptionStats(): \stdClass
     {
-        return DB::select(DB::raw("
+        return DB::select("
                 SELECT
 	                SUM(p.value) AS sum,
                     COUNT(DISTINCT IFNULL(u.authoritative_email, p.email)) AS count
@@ -194,7 +194,7 @@ class Darujme
                 WHERE
                     p.campaign IN ('dielo_trnavka', 'ba_trnavka_dielo_trnavka')
                         AND
-                    p.received_at >= '2023-01-01 00:00:00'"))[0];
+                    p.received_at >= '2023-01-01 00:00:00'")[0];
     }
 
     public function stats(): array
@@ -220,7 +220,7 @@ class Darujme
         }
 
         return [
-            'all_users' => DB::select(DB::raw(sprintf(
+            'all_users' => DB::select(sprintf(
                 'SELECT
                     COUNT(DISTINCT IFNULL(u.authoritative_email, p.email)) AS count
                 FROM
@@ -230,8 +230,8 @@ class Darujme
                 ON
                     p.email = u.email
                 %s
-                ', $campaignsCondition)))[0]->count,
-            'by_year' => DB::select(DB::raw(sprintf(
+                ', $campaignsCondition))[0]->count,
+            'by_year' => DB::select(sprintf(
                 'SELECT
                     %s AS year,
                     COUNT(DISTINCT IFNULL(u.authoritative_email, p.email)) AS count,
@@ -247,7 +247,7 @@ class Darujme
                     YEAR
                 ORDER BY
                     YEAR DESC
-                ', $groupBy, $campaignsCondition))),
+                ', $groupBy, $campaignsCondition)),
         ];
     }
 

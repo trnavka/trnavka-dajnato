@@ -36,17 +36,17 @@ class DajnatoForm extends Composer
         $campaign = $this->dajnato->campaign();
         $defaultFormData = $this->dajnato->defaultFormData($campaign);
 
-        $formName = $this->request->get('modal') ? 'donation_modal' : 'donation';
+        $formName = $this->request->query->get('modal') ? 'donation_modal' : 'donation';
 
         $form = $this->formFactory
             ->createNamedBuilder($formName, DonationType::class, $defaultFormData, [
                 'campaign' => $campaign,
-                'action' => $this->dajnato->formUrl($campaign->id, 'T' === $this->request->get('modal')),
+                'action' => $this->dajnato->formUrl($campaign->id, 'T' === $this->request->query->get('modal')),
             ])
             ->getForm();
 
         if ($this->request->isMethod('POST')) {
-            $form->submit($this->request->get($formName));
+            $form->submit($this->request->request->all($formName));
 
             if ($form->isValid()) {
                 $data = $form->getData();
@@ -69,7 +69,7 @@ class DajnatoForm extends Composer
         return [
             'form' => $this->twig->render('campaign.html.twig', array(
                 'donation_form' => $form->createView(),
-                'isEmbedded' => 'T' === $this->request->get('modal'),
+                'isEmbedded' => 'T' === $this->request->query->get('modal'),
                 'formTitle' => [
                     0 => [0 => 'Chyba', 1 => 'Chcem prispievať každý mesiac'],
                     1 => [0 => 'Chcem darovať jednorazovo', 1 => 'Chcem prispieť']

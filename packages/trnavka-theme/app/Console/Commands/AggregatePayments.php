@@ -16,7 +16,7 @@ class AggregatePayments extends Command
     {
         $this->info('Updating Darujme.sk stats');
 
-        $payments = DB::select(DB::raw("SELECT
+        $payments = DB::select("SELECT
             CONCAT(t.received_at, ' 10:00:00')   AS Time,
             t.value         AS Value,
             IF(
@@ -86,7 +86,7 @@ class AggregatePayments extends Command
                       ON t.email =
                          s.email
             ORDER BY
-                Time"));
+                Time");
 
         $result = [];
 
