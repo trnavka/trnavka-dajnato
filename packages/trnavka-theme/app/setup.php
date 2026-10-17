@@ -65,6 +65,25 @@ add_action('enqueue_block_editor_assets', function () use
 }, 100);
 
 /**
+ * Load the editor styles inside the block editor canvas too – since WordPress 7.1
+ * the canvas is always an iframe and styles from 'enqueue_block_editor_assets'
+ * do not reach it.
+ *
+ * @return void
+ */
+add_action('enqueue_block_assets', function () use
+(
+    $assets,
+    $manifest
+) {
+    if (!is_admin()) {
+        return;
+    }
+
+    wp_enqueue_style('editor2', home_url() . $manifest[$assets . 'editor.css']);
+}, 100);
+
+/**
  * Register the initial theme setup.
  *
  * @return void
