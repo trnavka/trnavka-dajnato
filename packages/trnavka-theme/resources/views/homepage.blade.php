@@ -18,16 +18,16 @@
     @include('partials.campaign.header')
 
     <div class="container-fluid">
-        <div class="wp-block-group wp-pattern-saleziani-call-to-action is-layout-flow wp-block-group-is-layout-flow has-yellow-background-color">
+        <div class="wp-block-group wp-pattern-saleziani-call-to-action is-layout-flow wp-block-group-is-layout-flow has-light-blue-background-color">
             <div class="wp-block-group row is-layout-flow wp-block-group-is-layout-flow">
                 <div class="wp-block-group col-sm-7 is-layout-flow wp-block-group-is-layout-flow">
                     <div class="wp-block-group content is-layout-flow wp-block-group-is-layout-flow">
-                        <h2 class="wp-block-heading">Prehľad roka 2024</h2>
+                        <h2 class="wp-block-heading">Rekonštrukcia zázemia kostola a fary</h2>
 
-                        <p>Každý rok sa v Saleziánskom diele na Trnávke deje množstvo aktivít, ktoré spolu so saleziánmi pripravuje veľa ľudí. Pozrite si, čo sa u nás dialo v roku 2024.</p>
+                        <p>Začala sa 2. etapa rekonštrukcie: bezbariérové priestory, nové zázemie pre farnosť aj komunitu saleziánov a úspornejšia prevádzka. Pomôžte nám ju dokončiť do júna 2027.</p>
 
                         <div class="wp-block-buttons is-layout-flex wp-block-buttons-is-layout-flex">
-                            <div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="/rok-2024/">Zobraziť prehľad</a></div>
+                            <div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="/dajnato/rekonstrukcia-zazemia-kostola-a-fary/">Chcem prispieť</a></div>
                         </div>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
 
 
                 <div class="wp-block-group col-sm-5 is-layout-flow wp-block-group-is-layout-flow">
-                    <figure class="wp-block-image size-full"><img decoding="async" src="@asset('images/2024/events/homepage-banner.jpg')" /></figure>
+                    <figure class="wp-block-image size-full"><img decoding="async" src="@asset('images/rekonstrukcia-zazemia/homepage-banner.jpg')" alt="Vizualizácia zrekonštruovaného zázemia kostola a fary" /></figure>
                 </div>
             </div>
         </div>
