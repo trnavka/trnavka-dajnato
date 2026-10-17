@@ -7,7 +7,7 @@
     },
     "app": {
       "css": [
-        "/app/themes/theme/public/app.341329f4.css"
+        "/app/themes/theme/public/app.db3c06c4.css"
       ],
       "js": [
         "/app/themes/theme/public/app.67cb95b5.js"
@@ -24,6 +24,14 @@
       ],
       "js": [
         "/app/themes/theme/public/editor.1d1d9683.js"
+      ]
+    },
+    "bulletin": {
+      "css": [
+        "/app/themes/theme/public/bulletin.493d656b.css"
+      ],
+      "js": [
+        "/app/themes/theme/public/bulletin.2832b87e.js"
       ]
     }
   }

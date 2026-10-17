@@ -19,7 +19,8 @@ class DajnatoForm extends Composer
      */
     protected static $views = [
         'dajnato-form',
-        'partials.content-single-campaign'
+        'partials.content-single-campaign',
+        'partials.content-single-bulletin',
     ];
 
     public function __construct(
