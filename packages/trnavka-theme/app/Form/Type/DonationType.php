@@ -64,10 +64,10 @@ class DonationType extends AbstractType
                         'Platba cez internet banking (Tatra banka)' => '38409407-c4ec-4060-b4a1-4792f29335ad',
                     ],
                     'constraints' => [
-                        new NotBlank([
-                            'groups' => ['onetime'],
-                            'message' => 'Vyberte spôsob platby'
-                        ])
+                        new NotBlank(
+                            message: 'Vyberte spôsob platby',
+                            groups: ['onetime'],
+                        )
                     ]
                 ]);
         }
@@ -97,10 +97,10 @@ class DonationType extends AbstractType
                         'Platba trvalým príkazom' => 'f425f4af-74ce-4a9b-82d6-783c93b80f17',
                     ],
                     'constraints' => [
-                        new NotBlank([
-                            'groups' => ['recurring'],
-                            'message' => 'Vyberte spôsob platby'
-                        ])
+                        new NotBlank(
+                            message: 'Vyberte spôsob platby',
+                            groups: ['recurring'],
+                        )
                     ]
                 ]);
         }
@@ -126,10 +126,10 @@ class DonationType extends AbstractType
                     'class' => 'js-otherAmount',
                 ],
                 'constraints' => [
-                    new NotBlank([
-                        'groups' => ['other_amount'],
-                        'message' => 'Vyberte z predvolených súm alebo zadajte vlastnú sumu',
-                    ])
+                    new NotBlank(
+                        message: 'Vyberte z predvolených súm alebo zadajte vlastnú sumu',
+                        groups: ['other_amount'],
+                    )
                 ]
             ])
             ->add('firstName', TextType::class, [
@@ -138,7 +138,7 @@ class DonationType extends AbstractType
                     'placeholder' => 'Meno'
                 ],
                 'constraints' => [
-                    new NotBlank(['message' => 'Zadajte meno'])
+                    new NotBlank(message: 'Zadajte meno')
                 ]
             ])
             ->add('lastName', TextType::class, [
@@ -147,7 +147,7 @@ class DonationType extends AbstractType
                     'placeholder' => 'Priezvisko'
                 ],
                 'constraints' => [
-                    new NotBlank(['message' => 'Zadajte priezvisko'])
+                    new NotBlank(message: 'Zadajte priezvisko')
                 ]
             ])
             ->add('email', EmailType::class, [
@@ -156,8 +156,8 @@ class DonationType extends AbstractType
                     'placeholder' => 'Emailová adresa'
                 ],
                 'constraints' => [
-                    new NotBlank(['message' => 'Zadajte emailovú adresu']),
-                    new Email(['message' => 'Zadajte platnú emailovú adresu'])
+                    new NotBlank(message: 'Zadajte emailovú adresu'),
+                    new Email(message: 'Zadajte platnú emailovú adresu')
                 ]
             ])
             ->add('terms', CheckboxType::class, [
