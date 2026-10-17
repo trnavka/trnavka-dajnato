@@ -23,7 +23,7 @@
         "oscarotero/env": "^2.1",
         "roots/bedrock-autoloader": "^1.1.0",
         "roots/bedrock-disallow-indexing": "^2.0.0",
-        "roots/wordpress": "^7.0.0",
+        "roots/wordpress": "^7.1.3",
         "roots/wp-config": "1.0.0",
         "roots/wp-password-bcrypt": "1.1.0",
         "packages/awesome-flickr-gallery-plugin": "3.5.6",
