@@ -128,6 +128,8 @@
     }
 
     &.has-light-blue-background-color {
+        background-color: $light-blue;
+
         .wp-block-heading, p {
             color: $dark;
         }
