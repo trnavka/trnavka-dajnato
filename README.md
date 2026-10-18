@@ -1,9 +1,8 @@
 # Daj na to a finančný prehľad
 
 WordPress pre darcovské kampane **Daj na to** a **finančný prehľad** Saleziánskeho diela na Trnávke.
-Beží na [new.trnavka.sk](https://new.trnavka.sk) a verejne sa zobrazuje ako [trnavka.sk/dajnato/](https://trnavka.sk/dajnato/) a [trnavka.sk/financny-prehlad/](https://trnavka.sk/financny-prehlad/) cez proxy zo starého webu trnavka.sk.
 
-Strategický kontext je v [IT mape](https://github.com/trnavka/it-mapa/blob/main/systemy/daj-na-to.md).
+Kde sa používa, kde beží a kto ho spravuje, je v [IT mape](https://github.com/trnavka/it-mapa/blob/main/systemy/daj-na-to.md).
 
 ## Čo robí
 
@@ -53,5 +52,5 @@ Spúšťajú sa cez WP-CLI:
 
 ## Nasadenie
 
-Ručne cez FTP alebo SSH na hosting saleziánskej provincie (Webglobe), subdoména new.trnavka.sk. Deploy skript ani CI nie je.
+Ručne cez FTP alebo SSH. Deploy skript ani CI nie je.
 Zbuildované assety témy (`packages/trnavka-theme/public`) sú v repozitári, takže na serveri netreba spúšťať `npm`.
