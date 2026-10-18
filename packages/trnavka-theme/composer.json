@@ -15,6 +15,9 @@
         }
     },
     "require": {
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "dompdf/dompdf": "^3.1",
+        "bacon/bacon-qr-code": "^3.1",
+        "anthropic-ai/sdk": "^0.30.0"
     }
 }

@@ -1,0 +1,195 @@
+/* Front-end weekly bulletin (single + archive) + print layout */
+
+/* match the "Daj na to" campaign detail page (.detail-page) body font size */
+.bulletin-single,
+.bulletin-archive {
+    font-size: 18px;
+    line-height: 32px;
+
+    @include media-breakpoint-down(md) { font-size: 16px; line-height: 28px; }
+    @include media-breakpoint-down(sm) { font-size: 15px; line-height: 24px; }
+}
+
+.bulletin-single {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2.5rem 1.875rem 6rem;
+
+    .bulletin-header { margin-bottom: 1.75rem; }
+
+    .bulletin-header .entry-title {
+        font-weight: 700;
+        font-size: 40px;
+        line-height: 49px;
+        margin: 30px 0 6px;
+
+        @include media-breakpoint-down(md) { font-size: 34px; line-height: 42px; margin-top: 20px; }
+        @include media-breakpoint-down(sm) { font-size: 24px; line-height: 32px; }
+    }
+    .bulletin-date {
+        font-size: 0.95rem;
+        color: rgba(59, 59, 66, 0.55);
+        margin-bottom: 0.4rem;
+    }
+
+    .bulletin-actions {
+        display: flex;
+        gap: 0.6rem;
+        margin-top: 0.5rem;
+    }
+
+    .bulletin-btn {
+        display: inline-block;
+        border: 1px solid $primary;
+        color: $primary;
+        background: transparent;
+        border-radius: 999px;
+        padding: 0.4rem 1.1rem;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover { background: $primary; color: #fff; }
+    }
+
+    .bulletin-liturgy { margin-bottom: 2rem; }
+    .bulletin-liturgy h2 { font-size: 1em; font-weight: 700; color: $primary; margin: 0 0 0.5rem; }
+
+    .bulletin-liturgy-table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th, td {
+            padding: 0.35rem 0.75rem 0.35rem 0;
+            text-align: left;
+            vertical-align: top;
+            border-bottom: 1px solid rgba(59, 59, 66, 0.12);
+        }
+
+        th { white-space: nowrap; font-weight: 600; }
+    }
+
+    .bulletin-items .bulletin-item {
+        margin-bottom: 1.3rem;
+        line-height: 1.6;
+    }
+
+    /* subtle short divider between announcements (from the left) */
+    .bulletin-items .bulletin-item:not(:last-child)::after {
+        content: '';
+        display: block;
+        width: 40px;
+        border-top: 1px solid rgba(59, 59, 66, 0.28);
+        margin-top: 1.3rem;
+    }
+
+    .bulletin-item-label { color: $primary; }
+    .bulletin-items a { color: $primary; text-decoration: underline; }
+}
+
+/* "Daj na to" widget rendered natively inside a bulletin: no box, full width */
+.bulletin-single .donate-form-block {
+    background: transparent;
+    margin: 2.2rem 0 0;
+}
+
+.bulletin-single .donate-form-block .form-widget-wrapper {
+    justify-content: flex-start;
+}
+
+.bulletin-single .donate-form-block .form-widget-wrapper .form-widget {
+    max-width: 100%;
+    background: transparent;
+    padding: 0;
+}
+
+.bulletin-single .form-widget .title {
+    text-align: left;
+    padding-top: 0;
+    font-size: 1.1rem;
+}
+
+.bulletin-single .form-widget .prices {
+    justify-content: flex-start;
+}
+
+.bulletin-single .form-widget .prices .price-input label span {
+    padding: 9px 4px;
+}
+
+.bulletin-single .form-widget .btn-donate {
+    display: block;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+}
+
+.bulletin-single .thank-you {
+    padding-top: 2.5rem;
+    padding-bottom: 0;
+}
+
+/* donation intro styled like a regular announcement (behavioural nudge) */
+.bulletin-single .bulletin-donate-intro {
+    margin-top: 1.3rem;
+    line-height: 1.6;
+}
+
+.bulletin-single .bulletin-donate-intro::before {
+    content: '';
+    display: block;
+    width: 40px;
+    border-top: 1px solid rgba(59, 59, 66, 0.28);
+    margin-bottom: 1.3rem;
+}
+
+.bulletin-single .embedded-dajnato-form-holder { margin: 0.6rem auto 0; max-width: 600px; }
+
+/* the embedded form has its own title — hide it, the intro above replaces it */
+.bulletin-single .modal-header { display: none; }
+
+.bulletin-archive {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2.5rem 1.875rem 6rem;
+
+    .bulletin-list {
+        list-style: none;
+        padding: 0;
+        margin: 1.5rem 0 0;
+    }
+
+    .bulletin-list li { border-bottom: 1px solid rgba(59, 59, 66, 0.12); }
+
+    .bulletin-list a {
+        display: flex;
+        gap: 1rem;
+        padding: 0.85rem 0;
+        text-decoration: none;
+        color: inherit;
+
+        &:hover .bulletin-list-title { color: $primary; }
+    }
+
+    .bulletin-list-date {
+        color: rgba(59, 59, 66, 0.55);
+        min-width: 130px;
+        white-space: nowrap;
+    }
+}
+
+@media print {
+    .header, .footer, .back-btn, .bulletin-actions,
+    #dajnato-cta-modal, .js-darujme-form-holder {
+        display: none !important;
+    }
+
+    body { background: #fff; color: #000; }
+
+    .bulletin-single { max-width: none; padding: 0; font-size: 11pt; }
+    .bulletin-single .entry-title { font-size: 18pt; }
+    .bulletin-items .bulletin-item { page-break-inside: avoid; }
+
+    a { color: #000; text-decoration: none; }
+}

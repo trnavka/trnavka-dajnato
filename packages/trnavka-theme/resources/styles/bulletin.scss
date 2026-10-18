@@ -1,0 +1,385 @@
+/* Admin editor for the weekly bulletin (React metabox) */
+
+/* White editing canvas for this CPT instead of the default grey admin background */
+body.post-type-bulletin {
+    background: #fff;
+
+    /* keep the title + editor at a comfortable line length instead of full width */
+    #post-body-content { max-width: 900px; }
+
+    /* #post-body-content is float:left; once it's narrower than the column the
+       metabox wraps beside it, so force the editor below the title (always). */
+    #postbox-container-2 { max-width: 900px; clear: left; }
+
+    /* hide the permalink/slug row under the title — not needed in this editor */
+    #edit-slug-box { display: none; }
+
+    /* "Zobraziť na webe" replaces it, so drop the Publish-box preview button */
+    #preview-action { display: none; }
+
+    /* hide the "Nový oznam" (Add New) button next to the page title — confusing here */
+    .page-title-action { display: none; }
+}
+
+/* Strip the postbox chrome (title bar, border, drag/collapse) — the editor is
+   the only content of this box, so it reads as plain page content. */
+#App_Metabox_BulletinMetabox {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+
+    .postbox-header { display: none; }
+    > .inside { margin: 0; padding: 0; }
+}
+
+/* Date picker + "Načítať z KBS" control, portaled in above the WP title field */
+#bulletin-title-header {
+    margin: 0 0 6px;
+
+    label { font-weight: 600; display: block; margin-bottom: 4px; }
+
+    .bulletin-date-line {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+
+        input[type="date"] { max-width: 200px; }
+    }
+
+    .bulletin-weekday {
+        font-size: 12px;
+        color: #646970;
+
+        &.is-warning { color: #b32d2e; font-weight: 600; }
+    }
+
+    .bulletin-warning {
+        color: #b32d2e;
+        font-size: 12px;
+        margin: 6px 0 0;
+    }
+
+    .bulletin-header-help {
+        color: #646970;
+        font-size: 12px;
+        margin: 6px 0 0;
+    }
+
+    .bulletin-title-label { margin-top: 12px; }
+}
+
+/* View / PDF links, portaled into the Publish box (#misc-publishing-actions) */
+#bulletin-publish-actions {
+    text-align: right;
+
+    .bulletin-publish-links {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 6px;
+    }
+
+    .bulletin-topbar-hint {
+        color: #646970;
+        font-style: italic;
+    }
+}
+
+#bulletin-app {
+    label { font-weight: 600; display: block; margin-bottom: 4px; }
+
+    /* placeholders: never bold, lighter grey (some inputs are bold themselves) */
+    input::placeholder,
+    textarea::placeholder {
+        font-weight: 400;
+        color: #a7aaae;
+        opacity: 1;
+    }
+
+    .bulletin-field { margin-bottom: 18px; }
+
+    .bulletin-date-line {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        input[type="date"] { max-width: 200px; }
+    }
+
+    .bulletin-hint { color: #646970; font-size: 12px; margin: 2px 0 10px; }
+
+    .bulletin-section {
+        margin-top: 28px;
+
+        &:first-child { margin-top: 0; }
+
+        h3 {
+            margin: 0 0 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e8e8ea;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #1d2327;
+        }
+    }
+
+    /* subtle icon buttons (remove ✕, reorder ↑↓) — ghost, not boxed */
+    .bulletin-remove {
+        width: 26px;
+        height: 26px;
+        padding: 0;
+        cursor: pointer;
+        border: 0;
+        background: transparent;
+        border-radius: 4px;
+        color: #9aa0a6;
+        line-height: 1;
+
+        &:hover { color: #b32d2e; background: #fcf0f0; }
+    }
+
+    /* announcement item — separated by a divider, not boxed */
+    .bulletin-item-row {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 20px 0;
+        border-bottom: 1px solid #000;
+
+        &:first-of-type { padding-top: 0; }
+        &:last-of-type { border-bottom: 0; }
+    }
+
+    .bulletin-row-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        button:not(.bulletin-remove) {
+            width: 26px;
+            height: 24px;
+            padding: 0;
+            cursor: pointer;
+            border: 0;
+            background: transparent;
+            border-radius: 4px;
+            color: #9aa0a6;
+            line-height: 1;
+
+            &:hover:not(:disabled) { color: #50575e; background: #f0f0f1; }
+            &:disabled { opacity: 0.4; cursor: default; }
+        }
+    }
+
+    .bulletin-item-fields { flex: 1; }
+    .bulletin-label-row { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
+    .bulletin-item-label { flex: 1; font-weight: 600; }
+    .bulletin-suggest { white-space: nowrap; flex: 0 0 auto; }
+
+    /* QR previews shown in a row below the announcement text */
+    .bulletin-item-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin-top: 12px;
+    }
+
+    .bulletin-link {
+        position: relative;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 11px;
+        line-height: 1.3;
+    }
+
+    .bulletin-qr {
+        width: 84px;
+        height: 84px;
+        border: 1px solid #e8e8ea;
+        border-radius: 4px;
+        background: #fff;
+        transition: outline-color 0.1s ease;
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+    }
+
+    .bulletin-link:hover .bulletin-qr,
+    .bulletin-link.is-qr-active .bulletin-qr { outline-color: #2271b1; }
+
+    /* circular numbered badge overlapping the QR's top-right corner — mirrors the link's */
+    .bulletin-link-badge {
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translate(35%, -40%); /* nudge out to overlap the corner */
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #2271b1;
+        border-radius: 50%;
+        background: #fff;
+        color: #2271b1;
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .bulletin-link-loading { color: #646970; }
+    .bulletin-link-error { color: #b32d2e; }
+
+    /* rich text */
+    .bulletin-rt {
+        position: relative;
+        border: 1px solid #8c8f94; /* match the other WP input borders */
+        border-radius: 2px; /* same radius as WP inputs */
+
+        /* match WP's native input focus exactly (respects the admin colour scheme) */
+        &.is-focused {
+            border-color: var(--wp-admin-theme-color);
+            box-shadow: 0 0 0 var(--wp-admin-border-width-focus, 1.5px) var(--wp-admin-theme-color);
+            outline: 2px solid transparent;
+        }
+    }
+
+    /* floating toolbar — centered above the field; fades in on focus (never over the text) */
+    .bulletin-rt-toolbar {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-bottom: 4px;
+        z-index: 2;
+        display: flex;
+        gap: 2px;
+        padding: 2px;
+        background: #fff;
+        border: 1px solid #dcdcde;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.12s ease;
+
+        button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 26px;
+            height: 22px;
+            cursor: pointer;
+            border: 0;
+            background: transparent;
+            border-radius: 3px;
+            color: #646970;
+
+            &:hover { background: #f0f0f1; color: #1d2327; }
+
+            .dashicons { font-size: 16px; width: 16px; height: 16px; line-height: 16px; }
+        }
+    }
+
+    .bulletin-rt.is-focused .bulletin-rt-toolbar {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .bulletin-rt-editable {
+        min-height: 44px;
+        padding: 8px 10px;
+        outline: none;
+        font-size: 14px; /* match the title/label input size */
+        line-height: 1.5;
+        counter-reset: ann-link; /* number links per announcement, matching the QR badges */
+
+        &:empty::before { content: attr(data-placeholder); color: #a7aaae; }
+        a { color: #2271b1; }
+
+        /* highlighted while hovering its QR code below the text */
+        a.is-link-active {
+            background: #fde68a;
+            box-shadow: 0 0 0 2px #fde68a;
+            border-radius: 2px;
+        }
+
+        /* Small circular badge with the link's number, inline right after the link
+           (raised). Pure CSS (generated content), so it is never part of the saved
+           HTML. Only http(s) links are numbered, matching the QR list. */
+        a[href^="http" i]::after {
+            counter-increment: ann-link;
+            content: counter(ann-link);
+            display: inline-flex; /* flex-centre the digit — reliable, unlike line-height */
+            align-items: center;
+            justify-content: center;
+            width: 15px;
+            height: 15px;
+            margin-left: 2px;
+            border: 1px solid #2271b1;
+            border-radius: 50%;
+            background: #fff;
+            color: #2271b1;
+            font-size: 9px;
+            font-weight: 700;
+            line-height: 1;
+            vertical-align: middle; /* sit on the text line, not raised */
+            white-space: nowrap;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+    }
+
+    /* liturgy rows (sorted by date, no manual reorder) */
+    .bulletin-lit-row {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        margin-bottom: 6px;
+    }
+
+    .bulletin-lit-num { width: 64px; }
+    .bulletin-lit-dot { color: #646970; }
+    .bulletin-lit-text { flex: 1; }
+
+    .bulletin-lit-head {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: #646970;
+        margin-bottom: 2px;
+    }
+
+    .bulletin-lit-invalid {
+        font-size: 12px;
+        color: #b32d2e;
+    }
+
+    /* KBS type filter (checkboxes above the editable rows) */
+    .bulletin-types {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 16px;
+        margin: 4px 0 6px;
+    }
+
+    .bulletin-types-help {
+        color: #646970;
+        font-size: 12px;
+        margin: 0 0 14px;
+    }
+
+    .bulletin-type {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 13px;
+        font-weight: 400;
+        cursor: pointer;
+    }
+
+}

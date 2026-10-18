@@ -20,6 +20,9 @@ Encore
         .addEntry(
                 'editor',
                 './resources/editor.js')
+        .addEntry(
+                'bulletin',
+                './resources/bulletin.js')
         .cleanupOutputBeforeBuild()
         .disableSingleRuntimeChunk()
         .enableSassLoader()

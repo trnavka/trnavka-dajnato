@@ -7,10 +7,16 @@
 namespace App;
 
 use App\Entity\Campaign;
+use App\Metabox\BulletinMetabox;
 use App\Metabox\CampaignMetabox;
 use App\Metabox\FinancialSubjectMetabox;
 use App\Metabox\SmallThumbnailMetabox;
+use App\Repositories\BulletinRepository;
 use App\Repositories\CampaignRepository;
+use App\Rest\BulletinRestController;
+use App\Rest\OpenApiController;
+use App\Roles\BulletinRole;
+use App\Services\BulletinPdf;
 use function Roots\bundle;
 use function Roots\view;
 
@@ -47,6 +53,33 @@ add_action('admin_enqueue_scripts', function () use
 ): void {
     wp_enqueue_script('media', home_url() . $manifest[$assets . 'media.js'], [], false, ['in_footer' => true]);
 //    bundle('media')->enqueue();
+}, 100);
+
+/**
+ * React bulletin editor – only on the edit screen of post type 'bulletin'.
+ */
+add_action('admin_enqueue_scripts', function ($hook) use
+(
+    $assets,
+    $manifest
+): void {
+    if (!in_array($hook, ['post.php', 'post-new.php'], true)) {
+        return;
+    }
+
+    $screen = get_current_screen();
+
+    if (!$screen || $screen->post_type !== 'bulletin') {
+        return;
+    }
+
+    if (isset($manifest[$assets . 'bulletin.js'])) {
+        wp_enqueue_script('bulletin', home_url() . $manifest[$assets . 'bulletin.js'], [], false, ['in_footer' => true]);
+    }
+
+    if (isset($manifest[$assets . 'bulletin.css'])) {
+        wp_enqueue_style('bulletin', home_url() . $manifest[$assets . 'bulletin.css']);
+    }
 }, 100);
 
 /**
@@ -201,6 +234,13 @@ add_action('widgets_init', function () {
 add_filter('rest_authentication_errors', function (
     $result
 ) {
+    // Public bulletin endpoints (data source for the church TV) + the OpenAPI doc
+    // do not require login; per-route authorization is handled by permission_callback.
+    $uri = $_SERVER['REQUEST_URI'] ?? '';
+    if (str_contains($uri, 'trnavka/v1/bulletins') || str_contains($uri, 'trnavka/v1/openapi')) {
+        return $result;
+    }
+
     // If a previous authentication check was applied,
     // pass that result along without modification.
     if (true === $result || is_wp_error($result)) {
@@ -437,6 +477,42 @@ add_action('post_submitbox_misc_actions', $addArchivedPostStatus, 0);
 
 new CampaignMetabox();
 new FinancialSubjectMetabox();
+new BulletinMetabox();
+new BulletinRestController();
+new OpenApiController();
+new BulletinRole();
+
+/**
+ * Order the bulletin archive (/farske-oznamy/) by the Sunday date, not by the
+ * publish date.
+ */
+add_action('pre_get_posts', function ($query) {
+    if (is_admin() || !$query->is_main_query()) {
+        return;
+    }
+
+    if ($query->is_post_type_archive('bulletin')) {
+        $query->set('meta_key', 'bulletin_date');
+        $query->set('orderby', 'meta_value');
+        $query->set('meta_type', 'DATE');
+        $query->set('order', 'DESC');
+    }
+});
+
+/**
+ * Export a bulletin to PDF: /farske-oznamy/{bulletin}/?pdf=1
+ */
+add_action('template_redirect', function () {
+    if (!is_singular('bulletin') || !isset($_GET['pdf'])) {
+        return;
+    }
+
+    $bulletin = (new BulletinRepository())->find(get_queried_object_id());
+
+    if ($bulletin) {
+        (new BulletinPdf())->stream($bulletin);
+    }
+});
 
 
 add_action('wp_head', function () {
